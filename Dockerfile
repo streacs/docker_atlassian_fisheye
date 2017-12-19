@@ -7,6 +7,8 @@ FROM debian:stretch-slim
 
 MAINTAINER Oliver Wolf <root@streacs.com>
 
+ARG APPLICATION_RELEASE
+
 ENV JAVA_VERSION_MAJOR=8
 ENV JAVA_VERSION_MINOR=152
 ENV JAVA_VERSION_BUILD=16
@@ -24,7 +26,7 @@ ENV DEBIAN_FRONTEND noninteractive
 
 RUN set -x \
   && apt-get update \
-  && apt-get -y --no-install-recommends install wget
+  && apt-get -y --no-install-recommends install wget unzip
 
 RUN set -x \
   && wget -q --no-cookies --no-check-certificate --header "Cookie: oraclelicense=accept-securebackup-cookie" -O /tmp/jdk-${JAVA_VERSION_MAJOR}u${JAVA_VERSION_MINOR}-linux-x64.tar.gz http://download.oracle.com/otn-pub/java/jdk/${JAVA_VERSION_MAJOR}u${JAVA_VERSION_MINOR}-b${JAVA_VERSION_BUILD}/${JAVA_VERSION_PATH}/jdk-${JAVA_VERSION_MAJOR}u${JAVA_VERSION_MINOR}-linux-x64.tar.gz \
@@ -39,7 +41,14 @@ RUN set -x \
 
 RUN set -x \
   && mkdir -p ${APPLICATION_INST} \
-  && mkdir -p ${APPLICATION_HOME}
+  && mkdir -p ${APPLICATION_HOME} \
+  && wget --no-check-certificate -nv -O /tmp/fisheye-${APPLICATION_RELEASE}.zip https://www.atlassian.com/software/fisheye/downloads/binary/fisheye-${APPLICATION_RELEASE}.zip \
+  && unzip -q /tmp/fisheye-${APPLICATION_RELEASE}.zip -d /tmp/ \
+  && mv /tmp/fecru-${APPLICATION_RELEASE}/* ${APPLICATION_INST} \
+  && chown -R ${SYSTEM_USER}:${SYSTEM_GROUP} ${APPLICATION_INST} \
+  && chown -R ${SYSTEM_USER}:${SYSTEM_GROUP} ${APPLICATION_HOME} \
+  && rm -rf /tmp/fecru-${APPLICATION_RELEASE} \
+  && rm /tmp/fisheye-${APPLICATION_RELEASE}.zip
 
 RUN set -x \
   && apt-get clean \
