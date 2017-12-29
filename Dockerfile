@@ -54,3 +54,21 @@ RUN set -x \
   && apt-get clean \
   && rm -rf /var/cache/* \
   && rm -rf /tmp/*
+
+RUN set -x \
+  && touch -d "@0" "${APPLICATION_INST}/bin/fisheyectl.sh"
+
+ADD files/service /usr/local/bin/service
+ADD files/entrypoint /usr/local/bin/entrypoint
+
+VOLUME ${APPLICATION_HOME}
+
+EXPOSE 8060
+
+ENTRYPOINT ["/usr/local/bin/entrypoint"]
+
+USER ${SYSTEM_USER}
+
+WORKDIR ${APPLICATION_HOME}
+
+CMD ["/usr/local/bin/service"]
