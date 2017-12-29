@@ -2,6 +2,19 @@
 
 if [ "$(stat -c "%Y" "${APPLICATION_INST}/bin/fisheyectl.sh")" -eq "0" ]; then
   sed --in-place "s~#!/bin/sh~#!/bin/sh \n FISHEYE_INST=${APPLICATION_HOME}~" ${APPLICATION_INST}/bin/fisheyectl.sh
+
+  if [ -n "${JVM_MEMORY_MIN}" ];
+    then
+      sed --in-place "s~-Djava.awt.headless=true~-Djava.awt.headless=true -Xms"${JVM_MEMORY_MIN}" ~" ${APPLICATION_INST}/bin/fisheyectl.sh
+  fi
+  if [ -n "${JVM_MEMORY_MAX}" ];
+    then
+      sed --in-place "s~-Djava.awt.headless=true~-Djava.awt.headless=true -Xmx"${JVM_MEMORY_MAX}" ~" ${APPLICATION_INST}/bin/fisheyectl.sh
+  fi
+    if [ -n "${JVM_ARGUMENTS}" ];
+      then
+        sed --in-place "s~-Djava.awt.headless=true~-Djava.awt.headless=true ${JVM_ARGUMENTS}~" ${APPLICATION_INST}/bin/fisheyectl.sh
+    fi
 fi
 
 exec "$@"
