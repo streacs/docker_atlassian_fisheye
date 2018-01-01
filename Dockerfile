@@ -27,7 +27,7 @@ ENV DEBIAN_FRONTEND noninteractive
 
 RUN set -x \
   && apt-get update \
-  && apt-get -y --no-install-recommends install wget unzip ca-certificates git subversion ruby-rspec \
+  && apt-get -y --no-install-recommends install wget unzip ca-certificates git subversion ruby-rspec ssh \
   && gem install serverspec
 
 RUN set -x \
