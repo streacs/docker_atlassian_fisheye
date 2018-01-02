@@ -67,6 +67,7 @@ public class PlanSpec {
             project(),
             "STREACS Atlassian FishEye", "A93EF7")
             .enabled(true)
+            .noNotifications()
             .linkedRepositories("DCK - STREACS Atlassian FishEye (master)")
             .planBranchManagement(new PlanBranchManagement()
                 .createForVcsBranchMatching("^feature/.*|^release/.*|^develop")
