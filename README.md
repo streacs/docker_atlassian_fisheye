@@ -10,13 +10,17 @@ docker run -ti -e ORACLE_JAVA_EULA=accepted -p 8060:8060 streacs/atlassian-fishe
 ```
 
 ## Environment Variables
-* ORACLE_JAVA_EULA
-* JVM_ARGUMENTS
-* SYSTEM_USER = fisheye
-* SYSTEM_GROUP = fisheye
-* SYSTEM_HOME = /home/fisheye
-* APPLICATION_INST = /opt/atlassian/fisheye
-* APPLICATION_HOME = /var/opt/atlassian/application-data/fisheye
+* (M) ORACLE_JAVA_EULA = accepted
+* (O) JVM_ARGUMENTS =
+* (I) SYSTEM_USER = fisheye
+* (I) SYSTEM_GROUP = fisheye
+* (I) SYSTEM_HOME = /home/fisheye
+* (I) APPLICATION_INST = /opt/atlassian/fisheye
+* (I) APPLICATION_HOME = /var/opt/atlassian/application-data/fisheye
+* (O) JVM_MEMORY_MIN = 1024m
+* (O) JVM_MEMORY_MAX = 2048m
+
+(M) = Mandatory / (O) = Optional / (I) Information
 
 ## Ports
 * 8060 = Default HTTP Connector
@@ -32,6 +36,23 @@ Add following environment variable to your configuration :
 ```bash
 -e ORACLE_JAVA_EULA=accepted
 ```
+
+## Examples
+
+Modify JVM memory
+```bash
+docker run -ti -e ORACLE_JAVA_EULA=accepted -p 8060:8060 -e JVM_MEMORY_MIN=1024m -e JVM_MEMORY_MAX=2048m streacs/atlassian-fisheye:x.x.x
+```
+
+Persist application data
+```bash
+docker run -ti -e ORACLE_JAVA_EULA=accepted -p 8060:8060 -v FISHEYE-DATA:/var/opt/atlassian/application-data/fisheye streacs/atlassian-fisheye:x.x.x
+```
+
+## Databases
+
+This image doesn't include the MySQL JDBC driver.
+Please use PostgreSQL.
 
 ## Source Code
 [Github](https://github.com/streacs/docker_atlassian_fisheye)
