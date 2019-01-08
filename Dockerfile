@@ -19,6 +19,9 @@ ENV SYSTEM_HOME /home/fisheye
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN set -x \
+  && mkdir /usr/share/man/man1
+  
+RUN set -x \
   && apt-get update \
   && apt-get -y --no-install-recommends install wget unzip ca-certificates git subversion ruby-rspec ssh openjdk-8-jdk-headless \
   && gem install serverspec
